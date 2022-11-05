@@ -1,0 +1,5 @@
+name: word-learning
+channels:
+  - conda-forge
+dependencies:
+  - gensim >= 4.2.0
