@@ -3,3 +3,5 @@ channels:
   - conda-forge
 dependencies:
   - gensim >= 4.2.0
+  - nltk <= 3.6
+  - pytest
