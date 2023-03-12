@@ -13,7 +13,7 @@ logging.basicConfig(
         level = logging.DEBUG
         )
 
-def main(contains_header, word2vec, fasttext) :
+def main(contains_header, word2vec, fasttext, target_column, error_column) :
     # load all models from files
     models = list()
     model_names = list()
@@ -34,8 +34,8 @@ def main(contains_header, word2vec, fasttext) :
         header.extend(["%s similarity" % name for name in model_names])
         writer.writerow(header)
     for line in reader :
-        target = line[0].lower()
-        error = line[2].lower()
+        target = line[target_column].lower()
+        error = line[error_column].lower()
         for n, model in enumerate(models) :
             if target not in model.wv :
                 logger.error("target word \"%s\" is not compatible with %s" % (target, model_names[n]))
@@ -66,5 +66,15 @@ if __name__ == "__main__" :
     parser.add_argument("-f", "--fasttext",
             help = "fasttext artifact location",
             action = "append"
+            )
+    parser.add_argument("-t", "--target-column",
+            help = "column number for target word",
+            default = 0,
+            type = int
+            )
+    parser.add_argument("-e", "--error-column",
+            help = "column number for error word",
+            default = 2,
+            type = int
             )
     main(**vars(parser.parse_args(sys.argv[1:])))
